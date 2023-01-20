@@ -63,7 +63,7 @@
         <br/>
         <mat-spinner *ngIf="spinner"></mat-spinner>
   
-        <audio controls="controls" *ngIf="blobURL">
+        <audio #audio controls="controls" *ngIf="blobURL">
           <source [src]="blobURL" type="audio/wav">
        </audio>
   

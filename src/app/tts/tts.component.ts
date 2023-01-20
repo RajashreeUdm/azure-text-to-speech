@@ -1,5 +1,5 @@
 import { AzurettsService } from './../azuretts.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TtsService } from '../tts.service';
 import * as xmlbuilder from 'xmlbuilder';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -18,6 +18,7 @@ export class TtsComponent implements OnInit {
   public blobURL!: SafeResourceUrl;
   public spinner = false;
   public voiceStyle: string[] = [];
+  @ViewChild('audio') audio!: ElementRef; 
   constructor(private ttsService: TtsService,
     private azureTtsService: AzurettsService, 
     private formBuilder: FormBuilder,
@@ -67,6 +68,10 @@ export class TtsComponent implements OnInit {
       if(data) {
         const blob = new Blob([data as Buffer], { type: 'application/octet-stream' });
         this.blobURL= this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+        if (this.audio) {
+          this.audio.nativeElement.load();
+          this.audio.nativeElement.play();
+        }
         this.spinner = false;
         this.azureTtsService.closeSpeechSynthesis();
       }
